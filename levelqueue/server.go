@@ -365,25 +365,3 @@ func (s *Server) Close() {
 		value.queue.ldb.Close()
 	}
 }
-
-func (s *Server) Clean(topic string) {
-	s.checkSameDB.Close()
-	s.pendingDB.Close()
-	s.pendingDB.Delete([]byte(topic), nil)
-	s.checkSameDB.Delete([]byte(topic), nil)
-}
-
-//遍历所有key value
-func (s *Server) ReadAll() {
-	db := s.pendingDB
-	iter := db.NewIterator(nil, nil)
-	for iter.Next() {
-		key := string(iter.Key())
-		iter = db.NewIterator(nil, nil)
-		for ok := iter.Seek([]byte(key)); ok; ok = iter.Next() {
-			fmt.Printf("查找数据:%s, value:%s\n", iter.Key(), iter.Value())
-		}
-
-	}
-	iter.Release()
-}

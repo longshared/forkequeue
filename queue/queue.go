@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"math/rand"
+	"os"
 	"time"
 
 	"github.com/longshared/forkequeue/levelqueue"
@@ -156,6 +157,11 @@ func Ack(topicName string, finAckData FinishAckData) bool {
 	return true
 }
 
-func RemoveData(topicName string) {
-	server.Clean(topicName)
+func RemoveData(dbPath string) {
+	server.Close()
+	//删除数据
+	err := os.RemoveAll(dbPath)
+	if err != nil {
+		log.Printf("temp files delete fail!,%v", err.Error())
+	}
 }

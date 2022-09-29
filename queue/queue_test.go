@@ -2,6 +2,7 @@ package queue
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 )
 
@@ -25,20 +26,17 @@ func TestClean(t *testing.T) {
 	Init("./.queue")
 	topic := "TestQueue"
 
-	//for i := 0; i < 10; i++ {
-	//	str := "hello world" + strconv.Itoa(i)
-	//	data := []byte(str)
-	//	//logs.Debug(string(res))
-	//
-	//	Push(topic, data)
-	//}
-	server.ReadAll()
-	RemoveData(topic)
+	for i := 0; i < 10; i++ {
+		str := "hello world" + strconv.Itoa(i)
+		data := []byte(str)
+		//logs.Debug(string(res))
 
+		Push(topic, data)
+	}
 	stats, err := Stats(topic)
 	if err != nil {
 		return
 	}
 	fmt.Printf("%v", stats.Topics)
-
+	RemoveData("./.queue")
 }
